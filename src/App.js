@@ -71,26 +71,38 @@ import axios from 'axios'
 //   population: 40400000
 //   }]
 
+const Country = ({country}) => {
+  return (
+    <>
+      <h2>{country.name}</h2>
+      <p>Capital: {country.capital}</p>
+      <p>Population: {country.population}</p>
+      <h3>Languages</h3>
+      <ul>
+        {country.languages.map(language => <li key={language.name}>{language.name}</li>)}
+      </ul>
+      <img src={country.flag} alt=""/>
+    </>
+  )
+}
+
 const Countries = ({ countries }) => {
   if (countries.length > 10) {
     return <><p>Too many matches. Make your filter more specific.</p></>
   } else if (countries.length > 1) {
     return (
-      countries.map(country => <><p key={country.name}>{country.name}</p></>)
+      countries.map(country => {
+        return (
+          <>
+          <p key={country.name}>{country.name}</p>
+          </>
+        )
+    })
     )
   } else if (countries.length === 1) {
     console.log(countries)
     return (
-      <>
-        <h2>{countries[0].name}</h2>
-        <p>Capital: {countries[0].capital}</p>
-        <p>Population: {countries[0].population}</p>
-        <h3>Languages</h3>
-        <ul>
-          {countries[0].languages.map(language => <li key={language.name}>{language.name}</li>)}
-        </ul>
-        <img src={countries[0].flag} alt=""/>
-      </>
+      <Country country={countries[0]} />
     )
   } else {
     return (
@@ -118,7 +130,8 @@ const App = () => {
     if (value === '') {
       setCountriesFilter(countries)
     } else {
-      setCountriesFilter(countries.filter(country => country.name.toLowerCase().includes(value)))
+      const filteredCountries = countries.filter(country => country.name.toLowerCase().includes(value))
+      setCountriesFilter(filteredCountries)
     }
   }
 
